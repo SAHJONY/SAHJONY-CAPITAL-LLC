@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sahjony Capital • AI Command Dashboard</title>
+  <style>
+    :root {
+      --bg: #05060f;
+      --panel: rgba(15, 23, 42, 0.78);
+      --panel-strong: #0f172a;
+      --card: rgba(17, 24, 45, 0.9);
+      --accent: #60a5fa;
+      --accent-2: #22d3ee;
+      --accent-3: #a78bfa;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #fb7185;
+      --border: rgba(148, 163, 184, 0.16);
+      --glow: 0 0 30px rgba(96, 165, 250, 0.18);
+    }
+
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; color: var(--text); }
+    body {
+      background: radial-gradient(circle at 15% 20%, rgba(96,165,250,0.2), transparent 38%),
+                  radial-gradient(circle at 85% 0%, rgba(167,139,250,0.18), transparent 42%),
+                  radial-gradient(circle at 80% 80%, rgba(34,211,238,0.15), transparent 40%),
+                  var(--bg);
+      min-height: 100vh;
+      padding: 2.5rem clamp(1rem, 4vw, 3.5rem);
+    }
+
+    header {
+      display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-bottom: 2rem;
+    }
+    .brand {
+      display: flex; flex-direction: column; gap: 0.6rem;
+    }
+    h1 {
+      margin: 0; font-size: clamp(2.3rem, 4vw, 3.2rem); letter-spacing: 0.08em; text-transform: uppercase;
+    }
+    .subtitle { color: var(--muted); font-size: 0.98rem; }
+    .status-pill {
+      display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.9rem; border-radius: 999px;
+      background: rgba(16,185,129,0.12); color: var(--success); font-weight: 600; font-size: 0.85rem;
+      letter-spacing: 0.05em; border: 1px solid rgba(16,185,129,0.2);
+    }
+
+    .grid { display: grid; gap: 1.6rem; }
+    @media(min-width: 1200px) {
+      .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    section {
+      background: var(--panel); border: 1px solid var(--border); border-radius: 20px; padding: 1.7rem;
+      box-shadow: 0 24px 60px rgba(5, 10, 30, 0.55);
+      backdrop-filter: blur(12px);
+    }
+    h2 {
+      margin: 0 0 1rem 0; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.95rem;
+      color: var(--accent);
+    }
+    .tag {
+      display: inline-flex; align-items: center; gap: 0.4rem; border-radius: 999px; padding: 0.2rem 0.8rem;
+      font-size: 0.75rem; letter-spacing: 0.05em; background: rgba(96,165,250,0.15); color: var(--accent);
+    }
+
+    .stat-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;
+    }
+    .stat-card {
+      background: var(--card); border: 1px solid rgba(96,165,250,0.12); border-radius: 16px; padding: 1.1rem;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+    }
+    .stat-label { color: var(--muted); font-size: 0.85rem; letter-spacing: 0.08em; text-transform: uppercase; }
+    .stat-value { font-size: 1.7rem; font-weight: 600; margin: 0.4rem 0; }
+    .stat-meta { color: var(--muted); font-size: 0.85rem; }
+
+    .pulse {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--success); box-shadow: 0 0 10px rgba(16,185,129,0.7);
+      animation: pulse 1.8s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(0.9); opacity: 0.8; }
+      50% { transform: scale(1.4); opacity: 0.4; }
+      100% { transform: scale(0.9); opacity: 0.8; }
+    }
+
+    .rows { display: grid; gap: 0.8rem; }
+    .row {
+      display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: 0.9rem 1rem;
+      background: rgba(15,23,42,0.9); border-radius: 12px; border: 1px solid rgba(148,163,184,0.12);
+    }
+    .row small { color: var(--muted); }
+
+    .avatar-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;
+    }
+    .avatar-card {
+      background: var(--card); border: 1px solid rgba(167,139,250,0.2); border-radius: 16px; padding: 0.9rem;
+    }
+    .avatar-card img {
+      width: 100%; border-radius: 12px; display: block; margin-bottom: 0.6rem; border: 1px solid rgba(148,163,184,0.2);
+    }
+
+    .footer-note { color: var(--muted); font-size: 0.85rem; margin-top: 0.8rem; }
+    .chart {
+      height: 120px; display: grid; grid-auto-flow: column; gap: 0.5rem; align-items: end;
+    }
+    .bar {
+      width: 100%; border-radius: 8px 8px 4px 4px; background: linear-gradient(180deg, var(--accent), rgba(96,165,250,0.2));
+      box-shadow: var(--glow);
+    }
+    .alert {
+      padding: 0.9rem 1rem; border-radius: 12px; border: 1px solid rgba(148,163,184,0.15); background: rgba(15,23,42,0.85);
+      display: flex; justify-content: space-between; gap: 1rem; align-items: center;
+    }
+    .alert strong { color: var(--text); }
+    .alert small { color: var(--muted); }
+    .alert.warn { border-color: rgba(245,158,11,0.3); }
+    .alert.ok { border-color: rgba(16,185,129,0.3); }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="status-pill"><span class="pulse"></span> Autonomous systems online</div>
+      <h1>Sahjony Capital • AI Command</h1>
+      <div class="subtitle">Premium intelligence dashboard • Updated 2026-03-03 01:35 UTC</div>
+    </div>
+    <div class="stat-card" style="min-width: 240px;">
+      <div class="stat-label">Primary Focus</div>
+      <div class="stat-value" id="kpi-primary">Ops + Growth</div>
+      <div class="stat-meta" id="kpi-primary-sub">AI-driven acquisition + execution systems</div>
+    </div>
+  </header>
+
+  <section>
+    <h2>Executive KPIs</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Capital Command</div>
+        <div class="stat-value" id="kpi-capital">Active</div>
+        <div class="stat-meta">Mission board + approval routing in progress</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Acquisition Pipeline</div>
+        <div class="stat-value" id="kpi-acquisition">Operational</div>
+        <div class="stat-meta">Lead intake + dedupe + verify loops staged</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Voice Command Mesh</div>
+        <div class="stat-value" id="kpi-voice">Online</div>
+        <div class="stat-meta">TTS live, inbound router ready for deploy</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">AI Workforce</div>
+        <div class="stat-value" id="kpi-workforce">Scaling</div>
+        <div class="stat-meta">Agents orchestrated across business lanes</div>
+      </div>
+    </div>
+    <div class="footer-note"><span class="tag">Priority</span> Attach live feeds to KPIs for real-time autoupdate.</div>
+  </section>
+
+  <div class="grid" style="margin-top: 1.6rem;">
+    <section>
+      <h2>Trading • Sahjony Trading LLC</h2>
+      <div class="rows">
+        <div class="row">
+          <div>
+            <strong>Command Stack</strong>
+            <div><small>Mission board + approvals for autonomous capital deployment.</small></div>
+          </div>
+          <span class="tag">Active</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Strategy Pipeline</strong>
+            <div><small>Multi-asset coverage (equities, FX, crypto, Polymarket).</small></div>
+          </div>
+          <span class="tag">Staged</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Risk Intelligence</strong>
+            <div><small>Live risk tiles and alert hooks queued for deployment.</small></div>
+          </div>
+          <span class="tag" style="color: var(--warning); background: rgba(245,158,11,0.15);">Pending</span>
+        </div>
+      </div>
+      <p class="footer-note"><span class="tag">Next</span> Wire live market feeds + execution logs into the board.</p>
+    </section>
+
+    <section>
+      <h2>Acquisitions • FrontDesk Agents</h2>
+      <div class="rows">
+        <div class="row">
+          <div>
+            <strong>Houston Cleanup</strong>
+            <div><small>Dedup + motivation tagging ongoing.</small></div>
+          </div>
+          <span class="tag">In Progress</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Quad-Verify</strong>
+            <div><small>Skip-trace workflow ready for overnight run.</small></div>
+          </div>
+          <span class="tag">Queued</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Retainer Pitch</strong>
+            <div><small>Priority One copy staged pending buyer import.</small></div>
+          </div>
+          <span class="tag" style="color: var(--warning); background: rgba(245,158,11,0.15);">Awaiting</span>
+        </div>
+      </div>
+      <p class="footer-note"><span class="tag" style="background: rgba(16,185,129,0.18); color: var(--success);">12–24h</span> Finish cleanup → run verify → launch Houston test block.</p>
+    </section>
+
+    <section>
+      <h2>Voice Command • Control Mesh</h2>
+      <div class="rows">
+        <div class="row">
+          <div>
+            <strong>Outbound TTS</strong>
+            <div><small>Telegram TTS live with voice tile integration.</small></div>
+          </div>
+          <span class="tag">Live</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Inbound Router</strong>
+            <div><small>Whisper router built; deploy to start telemetry.</small></div>
+          </div>
+          <span class="tag" style="color: var(--warning); background: rgba(245,158,11,0.15);">Ready</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Auto Routing</strong>
+            <div><small>Commands auto-tag by business lane.</small></div>
+          </div>
+          <span class="tag">Enabled</span>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Labs & Holdings</h2>
+      <div class="rows">
+        <div class="row">
+          <div>
+            <strong>App Factory</strong>
+            <div><small>On standby for premium builds and modules.</small></div>
+          </div>
+          <span class="tag">Ready</span>
+        </div>
+        <div class="row">
+          <div>
+            <strong>Wholesale Holdings</strong>
+            <div><small>Monitoring for new instruction packs.</small></div>
+          </div>
+          <span class="tag">Monitoring</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section style="margin-top: 1.6rem;">
+    <h2>Brand Avatars • Business Representatives</h2>
+    <p><span class="tag">Premium</span> Executive avatar suite generated for public-facing brand identity.</p>
+    <div class="avatar-grid">
+      <div class="avatar-card">
+        <img src="assets/avatars/avatar-mission-control.png" alt="Mission Control Lead avatar" />
+        <strong>Mission Control Lead</strong>
+        <div class="footer-note">Sahjony Capital command operations.</div>
+      </div>
+      <div class="avatar-card">
+        <img src="assets/avatars/avatar-acquisitions.png" alt="Acquisitions Commander avatar" />
+        <strong>Acquisitions Commander</strong>
+        <div class="footer-note">FrontDesk Agents acquisition workflows.</div>
+      </div>
+      <div class="avatar-card">
+        <img src="assets/avatars/avatar-voice-architect.png" alt="Voice Mesh Architect avatar" />
+        <strong>Voice Mesh Architect</strong>
+        <div class="footer-note">Voice-command systems + control mesh.</div>
+      </div>
+    </div>
+  </section>
+
+  <section style="margin-top: 1.6rem;">
+    <h2>AI System Health</h2>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <div class="stat-label">Automation Latency</div>
+        <div class="stat-value" id="kpi-latency">Low</div>
+        <div class="stat-meta">Queue health stable</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Data Integrity</div>
+        <div class="stat-value" id="kpi-integrity">98%</div>
+        <div class="stat-meta">Verification coverage improving</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Compliance Guard</div>
+        <div class="stat-value" id="kpi-compliance">Active</div>
+        <div class="stat-meta">Sanctions/AML gates enforced</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Agent Coverage</div>
+        <div class="stat-value" id="kpi-coverage">12 lanes</div>
+        <div class="stat-meta">Trading • Acquisitions • Voice • Labs</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="grid" style="margin-top: 1.6rem;">
+    <section>
+      <h2>Performance Pulse</h2>
+      <p><span class="tag">7-Day</span> Visual signal for output volume and execution throughput.</p>
+      <div class="chart" id="pulse-chart">
+        <div class="bar" style="height: 35%;"></div>
+        <div class="bar" style="height: 52%;"></div>
+        <div class="bar" style="height: 68%;"></div>
+        <div class="bar" style="height: 58%;"></div>
+        <div class="bar" style="height: 76%;"></div>
+        <div class="bar" style="height: 84%;"></div>
+        <div class="bar" style="height: 92%;"></div>
+      </div>
+      <div class="footer-note">Auto-updates once live metrics are wired in.</div>
+    </section>
+
+    <section>
+      <h2>Alerts & Tasks</h2>
+      <div class="rows" id="alerts-list">
+        <div class="alert ok">
+          <div>
+            <strong>Telegram Dispatch</strong>
+            <div><small>Avatar suite delivered to command chat.</small></div>
+          </div>
+          <span class="tag">Complete</span>
+        </div>
+        <div class="alert warn">
+          <div>
+            <strong>Whisper Router Deploy</strong>
+            <div><small>Enable inbound voice logging + telemetry feed.</small></div>
+          </div>
+          <span class="tag" style="color: var(--warning); background: rgba(245,158,11,0.15);">Pending</span>
+        </div>
+        <div class="alert">
+          <div>
+            <strong>Live Data Feed</strong>
+            <div><small>Connect Supabase + CRM + Stripe to KPIs.</small></div>
+          </div>
+          <span class="tag">Queued</span>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section style="margin-top: 1.6rem;">
+    <h2>CEO Brief</h2>
+    <p><span class="tag">Daily</span> Executive summary prepared for morning delivery.</p>
+    <div class="rows">
+      <div class="row">
+        <div>
+          <strong>Top Wins</strong>
+          <div><small id="brief-wins">Avatar identity system created + brand kit finalized.</small></div>
+        </div>
+        <span class="tag">Locked</span>
+      </div>
+      <div class="row">
+        <div>
+          <strong>Next Focus</strong>
+          <div><small id="brief-next">Deploy voice router + attach live KPI feeds.</small></div>
+        </div>
+        <span class="tag">Priority</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    async function loadMetrics() {
+      try {
+        const res = await fetch('data/metrics.json', { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        const k = data.kpis || {};
+
+        const set = (id, val) => { const el = document.getElementById(id); if (el && val) el.textContent = val; };
+        set('kpi-capital', k.capital_command);
+        set('kpi-acquisition', k.acquisition_pipeline);
+        set('kpi-voice', k.voice_mesh);
+        set('kpi-workforce', k.ai_workforce);
+        set('kpi-latency', k.automation_latency);
+        set('kpi-integrity', k.data_integrity);
+        set('kpi-compliance', k.compliance_guard);
+        set('kpi-coverage', k.agent_coverage);
+
+        if (data.updated) {
+          const subtitle = document.querySelector('.subtitle');
+          if (subtitle) subtitle.textContent = `Premium intelligence dashboard • Updated ${data.updated}`;
+        }
+
+        if (Array.isArray(data.pulse)) {
+          const chart = document.getElementById('pulse-chart');
+          if (chart) {
+            chart.innerHTML = '';
+            data.pulse.forEach(p => {
+              const bar = document.createElement('div');
+              bar.className = 'bar';
+              bar.style.height = `${p}%`;
+              chart.appendChild(bar);
+            });
+          }
+        }
+
+        if (Array.isArray(data.alerts)) {
+          const list = document.getElementById('alerts-list');
+          if (list) {
+            list.innerHTML = '';
+            data.alerts.forEach(a => {
+              const item = document.createElement('div');
+              item.className = `alert ${a.tone || ''}`;
+              item.innerHTML = `<div><strong>${a.title || 'Alert'}</strong><div><small>${a.detail || ''}</small></div></div><span class="tag">${a.status || ''}</span>`;
+              list.appendChild(item);
+            });
+          }
+        }
+
+        if (data.brief) {
+          set('brief-wins', data.brief.wins);
+          set('brief-next', data.brief.next);
+        }
+      } catch (err) {
+        console.warn('metrics load failed', err);
+      }
+    }
+
+    loadMetrics();
+  </script>
+</body>
+</html>

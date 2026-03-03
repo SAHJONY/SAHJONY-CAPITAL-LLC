@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sahjony CRM • Premium Control</title>
+  <style>
+    :root {
+      --bg:#05060f; --panel:#0f172a; --card:#11182b; --accent:#60a5fa; --accent2:#22d3ee;
+      --text:#f8fafc; --muted:#94a3b8; --border:rgba(148,163,184,0.16);
+    }
+    *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui}
+    header{padding:2rem 2.5rem;border-bottom:1px solid var(--border);background:rgba(15,23,42,0.6);backdrop-filter:blur(10px)}
+    h1{margin:0;letter-spacing:.08em;text-transform:uppercase}
+    .sub{color:var(--muted)}
+    .grid{display:grid;gap:1.2rem;padding:2rem 2.5rem}
+    .kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem}
+    .label{color:var(--muted);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+    .value{font-size:1.6rem;font-weight:600;margin:.3rem 0}
+    .kanban{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+    .lane{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:1rem}
+    .deal{background:#0b1225;border:1px solid rgba(96,165,250,0.2);border-radius:12px;padding:.8rem;margin:.7rem 0}
+    .deal small{color:var(--muted)}
+    .pill{display:inline-flex;gap:.4rem;padding:.2rem .7rem;border-radius:999px;background:rgba(96,165,250,.15);color:var(--accent);font-size:.75rem}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Sahjony CRM • Premium Control</h1>
+    <div class="sub">Custom CRM — pipelines, deals, contacts, tasks, analytics</div>
+  </header>
+
+  <main class="grid">
+    <section class="kpis">
+      <div class="card"><div class="label">Total Contacts</div><div class="value">0</div><small class="sub">Sync pending</small></div>
+      <div class="card"><div class="label">Active Deals</div><div class="value">0</div><small class="sub">Pipeline online</small></div>
+      <div class="card"><div class="label">Won Revenue</div><div class="value">$0.00</div><small class="sub">Stripe sync pending</small></div>
+      <div class="card"><div class="label">Open Tasks</div><div class="value">0</div><small class="sub">Agent queue</small></div>
+    </section>
+
+    <section>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.8rem;">
+        <h2 style="margin:0;letter-spacing:.08em;text-transform:uppercase;font-size:.95rem;color:var(--accent)">Pipeline</h2>
+        <span class="pill">Live Kanban</span>
+      </div>
+      <div class="kanban">
+        <div class="lane">
+          <strong>New</strong>
+          <div class="deal"><div>Houston Lead #102</div><small>Source: Inbound</small></div>
+          <div class="deal"><div>Dallas Seller #41</div><small>Source: Outreach</small></div>
+        </div>
+        <div class="lane">
+          <strong>Qualified</strong>
+          <div class="deal"><div>Investor Lead #77</div><small>Score: 82</small></div>
+        </div>
+        <div class="lane">
+          <strong>Negotiation</strong>
+          <div class="deal"><div>Multi-unit Deal #08</div><small>ETA: 3 days</small></div>
+        </div>
+        <div class="lane">
+          <strong>Won</strong>
+          <div class="deal"><div>Acquisition #05</div><small>Closed</small></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

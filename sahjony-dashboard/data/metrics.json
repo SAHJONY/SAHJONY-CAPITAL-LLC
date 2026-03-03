@@ -1,0 +1,44 @@
+{
+  "updated": "2026-03-03 02:20 UTC",
+  "kpis": {
+    "capital_command": "Active",
+    "acquisition_pipeline": "Operational",
+    "voice_mesh": "Online",
+    "ai_workforce": "Scaling",
+    "automation_latency": "Low",
+    "data_integrity": "98%",
+    "compliance_guard": "Active",
+    "agent_coverage": "12 lanes",
+    "revenue": "$0.00",
+    "active_deals": "0",
+    "daily_voice_interactions": "0",
+    "win_rate": "0.0%"
+  },
+  "pulse": [
+    35,
+    52,
+    68,
+    58,
+    76,
+    84,
+    92
+  ],
+  "alerts": [
+    {
+      "title": "CRM Sync",
+      "status": "Live",
+      "tone": "ok",
+      "detail": "Supabase metrics wired."
+    },
+    {
+      "title": "Stripe Feed",
+      "status": "Pending",
+      "tone": "warn",
+      "detail": "Revenue pulled from Stripe if available."
+    }
+  ],
+  "brief": {
+    "wins": "CRM schema deployed + KPI feed wired.",
+    "next": "Deploy voice router + enable automated posting loop."
+  }
+}
