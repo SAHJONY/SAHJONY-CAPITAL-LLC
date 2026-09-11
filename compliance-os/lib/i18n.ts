@@ -1,0 +1,17 @@
+export const locales = ['es','en','fr','pt','ar'] as const;
+export type Locale = (typeof locales)[number];
+
+export function isLocale(value: string): value is Locale {
+  return locales.includes(value as Locale);
+}
+
+const dictionaries = {
+  es: {app:'Compliance OS', dashboard:'Panel', transactions:'Transacciones', screening:'Sanciones', alerts:'Alertas', cases:'Casos', sar:'SAR/STR', audit:'Auditoría', risk:'Riesgo', low:'Bajo', medium:'Medio', high:'Alto', prohibited:'Prohibido', pending:'Pendiente', signIn:'Iniciar sesión', email:'Correo', password:'Contraseña', title:'Infraestructura global de cumplimiento', subtitle:'BSA/AML, sanciones, monitoreo y trazabilidad con controles basados en riesgo.', noData:'Sin registros', language:'Idioma', liveProviderNotice:'Proveedor de sanciones en vivo no configurado: ningún resultado pendiente se trata como CLEAR.'},
+  en: {app:'Compliance OS', dashboard:'Dashboard', transactions:'Transactions', screening:'Sanctions', alerts:'Alerts', cases:'Cases', sar:'SAR/STR', audit:'Audit', risk:'Risk', low:'Low', medium:'Medium', high:'High', prohibited:'Prohibited', pending:'Pending', signIn:'Sign in', email:'Email', password:'Password', title:'Global compliance infrastructure', subtitle:'BSA/AML, sanctions, monitoring and auditable risk-based controls.', noData:'No records', language:'Language', liveProviderNotice:'Live sanctions provider is not configured: no pending result is treated as CLEAR.'},
+  fr: {app:'Compliance OS', dashboard:'Tableau de bord', transactions:'Transactions', screening:'Sanctions', alerts:'Alertes', cases:'Dossiers', sar:'SAR/STR', audit:'Audit', risk:'Risque', low:'Faible', medium:'Moyen', high:'Élevé', prohibited:'Interdit', pending:'En attente', signIn:'Connexion', email:'E-mail', password:'Mot de passe', title:'Infrastructure mondiale de conformité', subtitle:'BSA/AML, sanctions, surveillance et contrôles traçables fondés sur le risque.', noData:'Aucun dossier', language:'Langue', liveProviderNotice:'Le fournisseur de sanctions en direct n’est pas configuré : aucun résultat en attente n’est considéré comme CLEAR.'},
+  pt: {app:'Compliance OS', dashboard:'Painel', transactions:'Transações', screening:'Sanções', alerts:'Alertas', cases:'Casos', sar:'SAR/STR', audit:'Auditoria', risk:'Risco', low:'Baixo', medium:'Médio', high:'Alto', prohibited:'Proibido', pending:'Pendente', signIn:'Entrar', email:'E-mail', password:'Senha', title:'Infraestrutura global de conformidade', subtitle:'BSA/AML, sanções, monitoramento e controles auditáveis baseados em risco.', noData:'Sem registros', language:'Idioma', liveProviderNotice:'O provedor de sanções em tempo real não está configurado: nenhum resultado pendente é tratado como CLEAR.'},
+  ar: {app:'نظام الامتثال', dashboard:'لوحة التحكم', transactions:'المعاملات', screening:'العقوبات', alerts:'التنبيهات', cases:'الحالات', sar:'SAR/STR', audit:'التدقيق', risk:'المخاطر', low:'منخفض', medium:'متوسط', high:'مرتفع', prohibited:'محظور', pending:'قيد المراجعة', signIn:'تسجيل الدخول', email:'البريد الإلكتروني', password:'كلمة المرور', title:'بنية تحتية عالمية للامتثال', subtitle:'ضوابط BSA/AML والعقوبات والمراقبة والتدقيق القائمة على المخاطر.', noData:'لا توجد سجلات', language:'اللغة', liveProviderNotice:'مزود العقوبات المباشر غير مُعدّ: لا تُعامل أي نتيجة معلقة على أنها CLEAR.'}
+} as const;
+
+export function getDictionary(locale: Locale) { return dictionaries[locale]; }
+export function direction(locale: Locale) { return locale === 'ar' ? 'rtl' : 'ltr'; }
